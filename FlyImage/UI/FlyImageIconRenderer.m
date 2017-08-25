@@ -56,7 +56,7 @@
     NSString* key = _iconURL.absoluteString;
 
     // if has already downloaded image
-    if (key != nil && [[FlyImageIconCache sharedInstance] isImageExistWithKey:key]) {
+    if (key != nil && [[FlyImageIconCache sharedInstance] imageExistsWithKey:key]) {
         __weak __typeof__(self) weakSelf = self;
         [[FlyImageIconCache sharedInstance] asyncGetImageWithKey:key
                                                        completed:^(NSString* key, UIImage* image) {
@@ -78,7 +78,7 @@
         return;
     }
 
-    if ([[FlyImageCache sharedInstance] isImageExistWithKey:key]) {
+    if ([[FlyImageCache sharedInstance] imageExistsWithKey:key]) {
         NSString* imagePath = [[FlyImageCache sharedInstance] imagePathWithKey:key];
         if (imagePath != nil) {
             NSURL* url = [NSURL fileURLWithPath:imagePath];

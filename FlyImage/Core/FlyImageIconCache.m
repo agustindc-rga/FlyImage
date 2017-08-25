@@ -103,7 +103,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
     NSParameterAssert(key != nil);
     NSParameterAssert(drawingBlock != nil);
 
-    if ([self isImageExistWithKey:key]) {
+    if ([self imageExistsWithKey:key]) {
         [self asyncGetImageWithKey:key completed:completed];
         return;
     }
@@ -268,7 +268,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
     }
 }
 
-- (BOOL)isImageExistWithKey:(NSString*)key
+- (BOOL)imageExistsWithKey:(NSString*)key
 {
     @synchronized(_images)
     {

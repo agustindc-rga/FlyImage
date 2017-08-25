@@ -107,10 +107,10 @@ static FlyImageDataFileManager* _fileManager;
 
 - (void)test20IsExist
 {
-    XCTAssert([_fileManager isFileExistWithName:@"10"]);
-    XCTAssert([_fileManager isFileExistWithName:@"11"]);
+    XCTAssert([_fileManager fileExistsWithName:@"10"]);
+    XCTAssert([_fileManager fileExistsWithName:@"11"]);
 
-    XCTAssert(![_fileManager isFileExistWithName:@"NotExist"]);
+    XCTAssert(![_fileManager fileExistsWithName:@"NotExist"]);
 }
 
 - (void)test30Retrieve
@@ -129,7 +129,7 @@ static FlyImageDataFileManager* _fileManager;
 {
     [_fileManager removeFileWithName:@"10"];
 
-    XCTAssert(![_fileManager isFileExistWithName:@"10"]);
+    XCTAssert(![_fileManager fileExistsWithName:@"10"]);
 }
 
 - (void)test90Purge

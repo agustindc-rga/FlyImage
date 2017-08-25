@@ -114,7 +114,7 @@
 
     // if has already downloaded original image
     NSString* originalKey = _originalURL.absoluteString;
-    if (originalKey != nil && [[FlyImageCache sharedInstance] isImageExistWithKey:originalKey]) {
+    if (originalKey != nil && [[FlyImageCache sharedInstance] imageExistsWithKey:originalKey]) {
         __weak __typeof__(self) weakSelf = self;
         [[FlyImageCache sharedInstance] asyncGetImageWithKey:originalKey
                                                     drawSize:_drawSize
@@ -128,7 +128,7 @@
 
     // if there is no thumbnail, then render original image
     NSString* thumbnailKey = _thumbnailURL.absoluteString;
-    if (thumbnailKey != nil && [[FlyImageCache sharedInstance] isImageExistWithKey:thumbnailKey]) {
+    if (thumbnailKey != nil && [[FlyImageCache sharedInstance] imageExistsWithKey:thumbnailKey]) {
         __weak __typeof__(self) weakSelf = self;
         [[FlyImageCache sharedInstance] asyncGetImageWithKey:thumbnailKey
                                                     drawSize:_drawSize

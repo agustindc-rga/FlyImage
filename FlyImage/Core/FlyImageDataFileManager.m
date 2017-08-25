@@ -72,7 +72,7 @@
 
     // already exist
     NSString* filePath = [_folderPath stringByAppendingPathComponent:name];
-    if ([self isFileExistWithName:name]) {
+    if ([self fileExistsWithName:name]) {
         FlyImageDataFile* file = [[FlyImageDataFile alloc] initWithPath:filePath];
         completed(file);
         return;
@@ -154,7 +154,7 @@
 
     // already exist
     NSString* filePath = [_folderPath stringByAppendingPathComponent:name];
-    if ([self isFileExistWithName:name]) {
+    if ([self fileExistsWithName:name]) {
         return [[FlyImageDataFile alloc] initWithPath:filePath];
     }
 
@@ -185,7 +185,7 @@
     return [[FlyImageDataFile alloc] initWithPath:filePath];
 }
 
-- (BOOL)isFileExistWithName:(NSString*)name
+- (BOOL)fileExistsWithName:(NSString*)name
 {
     NSParameterAssert(name);
 
@@ -196,7 +196,7 @@
 {
     NSParameterAssert(name);
 
-    if (![self isFileExistWithName:name]) {
+    if (![self fileExistsWithName:name]) {
         return nil;
     }
 
@@ -210,7 +210,7 @@
 {
     NSParameterAssert(name);
 
-    if (![self isFileExistWithName:name]) {
+    if (![self fileExistsWithName:name]) {
         return;
     }
 

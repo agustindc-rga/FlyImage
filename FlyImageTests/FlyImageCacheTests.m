@@ -185,7 +185,7 @@ static int kMultipleTimes = 15;
 {
     NSString* imageKey = @"11";
     [_imageCache removeImageWithKey:imageKey];
-    XCTAssert(![_imageCache isImageExistWithKey:imageKey]);
+    XCTAssert(![_imageCache imageExistsWithKey:imageKey]);
 }
 
 - (void)test60ImagePath
@@ -199,8 +199,8 @@ static int kMultipleTimes = 15;
     XCTestExpectation* expectation = [self expectationWithDescription:@"test80ChangeImageKey"];
 
     [_imageCache changeImageKey:@"10" newKey:@"newKey"];
-    XCTAssert(![_imageCache isImageExistWithKey:@"10"]);
-    XCTAssert([_imageCache isImageExistWithKey:@"newKey"]);
+    XCTAssert(![_imageCache imageExistsWithKey:@"10"]);
+    XCTAssert([_imageCache imageExistsWithKey:@"newKey"]);
 
     [_imageCache asyncGetImageWithKey:@"newKey" completed:^(NSString* key, UIImage* image) {
         XCTAssert( image.size.width == imageWidth );
@@ -215,7 +215,7 @@ static int kMultipleTimes = 15;
 - (void)test90Purge
 {
     [_imageCache purge];
-    XCTAssert(![_imageCache isImageExistWithKey:@"10"]);
+    XCTAssert(![_imageCache imageExistsWithKey:@"10"]);
 }
 
 @end

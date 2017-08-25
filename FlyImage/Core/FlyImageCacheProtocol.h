@@ -42,7 +42,7 @@ typedef void (^FlyImageCacheRetrieveBlock)(NSString* key, UIImage* image);
 /**
  *  Check if image exists in cache synchronized. NO delay.
  */
-- (BOOL)isImageExistWithKey:(NSString*)key;
+- (BOOL)imageExistsWithKey:(NSString*)key;
 
 /**
  *  Remove an image from cache.

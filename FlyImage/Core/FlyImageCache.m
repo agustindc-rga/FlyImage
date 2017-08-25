@@ -159,7 +159,7 @@
     NSParameterAssert(key != nil);
     NSParameterAssert(filename != nil);
 
-    if ([self isImageExistWithKey:key] && completed != nil) {
+    if ([self imageExistsWithKey:key] && completed != nil) {
         [self asyncGetImageWithKey:key
                           drawSize:drawSize
                    contentsGravity:contentsGravity
@@ -352,7 +352,7 @@
     }
 }
 
-- (BOOL)isImageExistWithKey:(NSString*)key
+- (BOOL)imageExistsWithKey:(NSString*)key
 {
     NSParameterAssert(key != nil);
 
@@ -509,7 +509,7 @@
 {
     NSParameterAssert(key != nil);
 
-    if (![self isImageExistWithKey:key]) {
+    if (![self imageExistsWithKey:key]) {
         return;
     }
 
@@ -539,7 +539,7 @@
 {
     NSParameterAssert(key != nil);
 
-    if (![self isImageExistWithKey:key]) {
+    if (![self imageExistsWithKey:key]) {
         return;
     }
 

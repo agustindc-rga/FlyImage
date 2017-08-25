@@ -32,7 +32,7 @@
 /**
  *  Check the file whether exist or not, no delay.
  */
-- (BOOL)isFileExistWithName:(NSString*)name;
+- (BOOL)fileExistsWithName:(NSString*)name;
 
 /**
  *  Get a `FlyImageDataFile` if it exists.

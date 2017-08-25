@@ -261,7 +261,7 @@
 											  completed:^(NSString* key, UIImage* image) {
 												  
 												  [[FlyImageIconCache sharedInstance] removeImageWithKey:@"70"];
-												  XCTAssert(![[FlyImageIconCache sharedInstance] isImageExistWithKey:@"70"]);
+												  XCTAssert(![[FlyImageIconCache sharedInstance] imageExistsWithKey:@"70"]);
 												  
 												  [expectation fulfill];
 											  }];
@@ -281,8 +281,8 @@
 											  completed:^(NSString* key, UIImage* image) {
 												  
 												  [[FlyImageIconCache sharedInstance] changeImageKey:@"80" newKey:@"newKey"];
-												  XCTAssert(![[FlyImageIconCache sharedInstance] isImageExistWithKey:@"80"]);
-												  XCTAssert([[FlyImageIconCache sharedInstance] isImageExistWithKey:@"newKey"]);
+												  XCTAssert(![[FlyImageIconCache sharedInstance] imageExistsWithKey:@"80"]);
+												  XCTAssert([[FlyImageIconCache sharedInstance] imageExistsWithKey:@"newKey"]);
 												  
 												  [[FlyImageIconCache sharedInstance] asyncGetImageWithKey:@"newKey" completed:^(NSString* key, UIImage* image) {
 													  XCTAssert( image.size.width == kImageWidth );
@@ -299,7 +299,7 @@
 - (void)test90Purge
 {
 	[[FlyImageIconCache sharedInstance] purge];
-	XCTAssert(![[FlyImageIconCache sharedInstance] isImageExistWithKey:@"10"]);
+	XCTAssert(![[FlyImageIconCache sharedInstance] imageExistsWithKey:@"10"]);
 }
 
 @end

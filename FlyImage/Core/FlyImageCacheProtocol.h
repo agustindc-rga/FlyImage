@@ -11,6 +11,8 @@
 
 typedef void (^FlyImageCacheRetrieveBlock)(NSString* key, UIImage* image);
 
+typedef id FlyImageOperationIdentifier;
+
 /**
  *  Common API for FlyImageCache and FlyImageIconCache.
  */
@@ -31,13 +33,18 @@ typedef void (^FlyImageCacheRetrieveBlock)(NSString* key, UIImage* image);
 /**
  *  Get image from cache asynchronously.
  */
-- (void)asyncGetImageWithKey:(NSString*)key
-                   completed:(FlyImageCacheRetrieveBlock)completed;
+- (FlyImageOperationIdentifier)asyncGetImageWithKey:(NSString*)key
+                                          completed:(FlyImageCacheRetrieveBlock)completed;
 
 /**
- *  Cancel geting an image from cache if the image has not already got.
+ *  Cancel all retrievals for an image from cache if the image has not already been fetched.
  */
-- (void)cancelGetImageWithKey:(NSString*)key;
+- (void)cancelGetImageOperationsForKey:(NSString*)key;
+
+/**
+ *  Cancel geting an image from cache if the image has not already been fetched.
+ */
+- (void)cancelGetImageOperation:(FlyImageOperationIdentifier)operation;
 
 /**
  *  Check if image exists in cache synchronized. NO delay.

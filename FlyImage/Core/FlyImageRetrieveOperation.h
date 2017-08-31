@@ -9,6 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "FlyImageCacheProtocol.h"
 
+/**
+ * Internal class.
+ */
+@interface FlyImageRetrieveObserver : NSObject
+
+@property (nonatomic, readonly) NSString *name;
+
+@end
+
+
 typedef UIImage* (^RetrieveOperationBlock)(void);
 
 /**
@@ -17,17 +27,32 @@ typedef UIImage* (^RetrieveOperationBlock)(void);
 @interface FlyImageRetrieveOperation : NSOperation
 
 /**
- *  When the operation start running, the block will be executed, 
- *  and require an uncompressed UIImage.
+ *  When the operation starts running, the block will be executed,
+ *  and it should return an uncompressed UIImage.
  */
 - (instancetype)initWithRetrieveBlock:(RetrieveOperationBlock)block;
 
 /**
- *  Allow to add multiple blocks
+ *  Add an observer that will call the given block when the operation completes
+ *  or is cancelled. The newly created observer is returned to the caller to
+ *  allow cancelling the observation.
  *
  *  @param block
  */
-- (void)addBlock:(FlyImageCacheRetrieveBlock)block;
+- (FlyImageRetrieveObserver*)addObserverUsingBlock:(FlyImageCacheRetrieveBlock)block;
+
+/**
+ *  The given observer will no longer be notified when the operation completes. The
+ *  block associated with the observer will be called as if the operation was cancelled.
+ *
+ *  @param observer
+ */
+- (void)cancelObserver:(FlyImageRetrieveObserver*)observer;
+
+/**
+ *  Returns YES if there are any observers that will be notified when the operation completes.
+ */
+- (BOOL)hasActiveObservers;
 
 /**
  *  Callback with result image, which can be nil.

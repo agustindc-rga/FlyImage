@@ -12,6 +12,7 @@
 #import "FlyImageEncoder.h"
 #import "FlyImageDecoder.h"
 #import "FlyImageRetrieveOperation.h"
+#import "FlyImageOperationQueue.h"
 
 static NSString* kFlyImageKeyVersion = @"v";
 static NSString* kFlyImageKeyFile = @"f";
@@ -38,7 +39,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
     NSMutableDictionary* _metas;
     NSMutableDictionary* _images;
     NSMutableDictionary* _addingImages;
-    NSOperationQueue* _retrievingQueue;
+    FlyImageOperationQueue *_retrievingQueue;
 }
 
 + (instancetype)sharedInstance
@@ -59,9 +60,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
 
         _lock = [[NSRecursiveLock alloc] init];
         _addingImages = [[NSMutableDictionary alloc] init];
-        _retrievingQueue = [NSOperationQueue new];
-        _retrievingQueue.qualityOfService = NSQualityOfServiceUserInteractive;
-        _retrievingQueue.maxConcurrentOperationCount = 6;
+        _retrievingQueue = [[FlyImageOperationQueue alloc] init];
 
         _metaPath = [metaPath copy];
         NSString* folderPath = [[_metaPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"/files"];
@@ -80,6 +79,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
 }
 
 #pragma mark - LifeCircle
+
 - (void)onWillTerminate
 {
     // 取消内存映射
@@ -94,6 +94,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
 }
 
 #pragma mark - APIs
+
 - (void)addImageWithKey:(NSString*)key
                    size:(CGSize)size
            drawingBlock:(FlyImageCacheDrawingBlock)drawingBlock
@@ -276,14 +277,14 @@ static NSString* kFlyImageKeyFilePointer = @"p";
     }
 }
 
-- (void)asyncGetImageWithKey:(NSString*)key completed:(FlyImageCacheRetrieveBlock)completed
+- (FlyImageOperationIdentifier)asyncGetImageWithKey:(NSString*)key completed:(FlyImageCacheRetrieveBlock)completed
 {
     NSParameterAssert(key != nil);
     NSParameterAssert(completed != nil);
 
     if (_dataFile == nil) {
         completed(key, nil);
-        return;
+        return nil;
     }
 
     NSArray* imageInfo;
@@ -294,7 +295,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
 
     if (imageInfo == nil || [imageInfo count] < kImageInfoCount) {
         completed(key, nil);
-        return;
+        return nil;
     }
 
     // width of image, height of image, offset, length
@@ -304,28 +305,23 @@ static NSString* kFlyImageKeyFilePointer = @"p";
     size_t imageLength = [[imageInfo objectAtIndex:kImageInfoIndexLength] unsignedLongValue];
 
     __weak __typeof__(self) weakSelf = self;
-    FlyImageRetrieveOperation* operation = [[FlyImageRetrieveOperation alloc] initWithRetrieveBlock:^UIImage * {
-		return [weakSelf.decoder iconImageWithBytes:weakSelf.dataFile.address
-									 offset:imageOffset
-									 length:imageLength
-								   drawSize:CGSizeMake(imageWidth, imageHeight)];
-
-    }];
-    operation.name = key;
-    [operation addBlock:completed];
-    [_retrievingQueue addOperation:operation];
+    
+    return [_retrievingQueue addOperationWithName:key retrieveBlock:^UIImage *{
+        return [weakSelf.decoder iconImageWithBytes:weakSelf.dataFile.address
+                                             offset:imageOffset
+                                             length:imageLength
+                                           drawSize:CGSizeMake(imageWidth, imageHeight)];
+    } completionBlock:completed];
 }
 
-- (void)cancelGetImageWithKey:(NSString*)key
+- (void)cancelGetImageOperationsForKey:(NSString*)key
 {
-    NSParameterAssert(key != nil);
+    [_retrievingQueue cancelOperationWithName:key];
+}
 
-    for (FlyImageRetrieveOperation* operation in _retrievingQueue.operations) {
-        if (!operation.cancelled && !operation.finished && [operation.name isEqualToString:key]) {
-            [operation cancel];
-            return;
-        }
-    }
+- (void)cancelGetImageOperation:(FlyImageOperationIdentifier)identifier
+{
+    [_retrievingQueue cancelOperationForIdentifier:identifier];
 }
 
 - (void)purge

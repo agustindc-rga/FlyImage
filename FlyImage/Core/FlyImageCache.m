@@ -11,6 +11,7 @@
 #import "FlyImageUtils.h"
 #import "FlyImageDecoder.h"
 #import "FlyImageRetrieveOperation.h"
+#import "FlyImageOperationQueue.h"
 
 #define kImageInfoIndexFileName 0
 #define kImageInfoIndexContentType 1
@@ -20,6 +21,7 @@
 
 @interface FlyImageCache ()
 @property (nonatomic, strong) FlyImageDecoder* decoder;
+- (instancetype)initWithMetaPath:(NSString*)metaPath NS_DESIGNATED_INITIALIZER;
 @end
 
 @implementation FlyImageCache {
@@ -27,7 +29,7 @@
     NSString* _metaPath;
     NSMutableDictionary* _images;
     NSMutableDictionary* _addingImages;
-    NSOperationQueue* _retrievingQueue;
+    FlyImageOperationQueue* _retrievingQueue;
 }
 
 + (instancetype)sharedInstance
@@ -35,22 +37,25 @@
     static dispatch_once_t onceToken;
     static FlyImageCache* __instance = nil;
     dispatch_once(&onceToken, ^{
-		NSString *metaPath = [[FlyImageUtils directoryPath] stringByAppendingPathComponent:@"/__images"];
-		__instance = [[[self class] alloc] initWithMetaPath:metaPath];
+		__instance = [[[self class] alloc] init];
     });
 
     return __instance;
 }
 
+- (instancetype)init
+{
+    NSString *metaPath = [[FlyImageUtils directoryPath] stringByAppendingPathComponent:@"/__images"];
+    return [self initWithMetaPath:metaPath];
+}
+
 - (instancetype)initWithMetaPath:(NSString*)metaPath
 {
-    if (self = [self init]) {
+    if (self = [super init]) {
         _lock = [[NSRecursiveLock alloc] init];
         _addingImages = [[NSMutableDictionary alloc] init];
         _maxCachedBytes = 1024 * 1024 * 512;
-        _retrievingQueue = [NSOperationQueue new];
-        _retrievingQueue.qualityOfService = NSQualityOfServiceUserInteractive;
-        _retrievingQueue.maxConcurrentOperationCount = 6;
+        _retrievingQueue = [[FlyImageOperationQueue alloc] init];
 
 #ifdef FLYIMAGE_WEBP
         _autoConvertWebP = NO;
@@ -85,7 +90,7 @@
 {
     [_retrievingQueue cancelAllOperations];
 
-    [self cleanCachedImages];
+    [self purge];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -121,22 +126,22 @@
 			}
 		}
 		
-		[weakSelf.dataFileManager purgeWithExceptions:lockedFilenames
-															   toSize:weakSelf.maxCachedBytes/2
-															completed:^(NSUInteger fileCount, NSUInteger totalSize) {
-																
-																// remove unlock keys
-																@synchronized (_images) {
-																	NSArray *allKeys = [_images allKeys];
-																	for (NSString *key in allKeys) {
-																		if ( [lockedKeys indexOfObject:key] == NSNotFound ) {
-																			[_images removeObjectForKey:key];
-																		}
-																	}
-																}
-																
-																[weakSelf saveMetadata];
-															}];
+        [weakSelf.dataFileManager purgeWithExceptions:lockedFilenames
+                                               toSize:weakSelf.maxCachedBytes/2
+                                            completed:^(NSUInteger fileCount, NSUInteger totalSize) {
+                                                
+                                                // remove unlock keys
+                                                @synchronized (_images) {
+                                                    NSArray *allKeys = [_images allKeys];
+                                                    for (NSString *key in allKeys) {
+                                                        if ( [lockedKeys indexOfObject:key] == NSNotFound ) {
+                                                            [_images removeObjectForKey:key];
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                [weakSelf saveMetadata];
+                                            }];
     }];
 }
 
@@ -362,16 +367,20 @@
     }
 }
 
-- (void)asyncGetImageWithKey:(NSString*)key completed:(FlyImageCacheRetrieveBlock)completed
+- (FlyImageOperationIdentifier)asyncGetImageWithKey:(NSString*)key completed:(FlyImageCacheRetrieveBlock)completed
 {
-    [self asyncGetImageWithKey:key drawSize:CGSizeZero contentsGravity:kCAGravityResizeAspect cornerRadius:0 completed:completed];
+    return [self asyncGetImageWithKey:key
+                             drawSize:CGSizeZero
+                       contentsGravity:kCAGravityResizeAspect
+                         cornerRadius:0
+                            completed:completed];
 }
 
-- (void)asyncGetImageWithKey:(NSString*)key
-                    drawSize:(CGSize)drawSize
-             contentsGravity:(NSString* const)contentsGravity
-                cornerRadius:(CGFloat)cornerRadius
-                   completed:(FlyImageCacheRetrieveBlock)completed
+- (FlyImageOperationIdentifier)asyncGetImageWithKey:(NSString*)key
+                                           drawSize:(CGSize)drawSize
+                                    contentsGravity:(NSString* const)contentsGravity
+                                       cornerRadius:(CGFloat)cornerRadius
+                                          completed:(FlyImageCacheRetrieveBlock)completed
 {
     NSParameterAssert(key != nil);
     NSParameterAssert(completed != nil);
@@ -384,7 +393,7 @@
 
     if (imageInfo == nil || [imageInfo count] <= kImageInfoIndexHeight) {
         completed(key, nil);
-        return;
+        return nil;
     }
 
     // filename, width, height, length
@@ -392,15 +401,13 @@
     FlyImageDataFile* dataFile = [self.dataFileManager retrieveFileWithName:filename];
     if (dataFile == nil) {
         completed(key, nil);
-        return;
+        return nil;
     }
 
     // if the image is retrieving, then just add the block, no need to create a new operation.
-    for (FlyImageRetrieveOperation* operation in _retrievingQueue.operations) {
-        if ([operation.name isEqualToString:key]) {
-            [operation addBlock:completed];
-            return;
-        }
+    FlyImageRetrieveOperation* existingOperation = [_retrievingQueue operationWithName:key];
+    if (existingOperation) {
+        return [existingOperation addObserverUsingBlock:completed];
     }
 
     CGSize imageSize = drawSize;
@@ -412,34 +419,30 @@
     ImageContentType contentType = [[imageInfo objectAtIndex:kImageInfoIndexContentType] integerValue];
 
     __weak __typeof__(self) weakSelf = self;
-    FlyImageRetrieveOperation* operation = [[FlyImageRetrieveOperation alloc] initWithRetrieveBlock:^UIImage * {
-																						 if ( ![dataFile open] ) {
-																							 return nil;
-																						 }
-																						 
-																						 return [weakSelf.decoder imageWithFile:(__bridge void *)(dataFile)
-																													  contentType:contentType
-																															bytes:dataFile.address
-																														   length:(size_t)dataFile.fileLength
-																														 drawSize:CGSizeEqualToSize(drawSize, CGSizeZero) ? imageSize : drawSize
-																												  contentsGravity:contentsGravity
-																													 cornerRadius:cornerRadius];
-    }];
-    operation.name = key;
-    [operation addBlock:completed];
-    [_retrievingQueue addOperation:operation];
+    
+    return [_retrievingQueue addOperationWithName:key retrieveBlock:^UIImage *{
+        if (![dataFile open]) {
+            return nil;
+        }
+        
+        return [weakSelf.decoder imageWithFile:(__bridge void *)(dataFile)
+                                   contentType:contentType
+                                         bytes:dataFile.address
+                                        length:(size_t)dataFile.fileLength
+                                      drawSize:CGSizeEqualToSize(drawSize, CGSizeZero) ? imageSize : drawSize
+                               contentsGravity:contentsGravity
+                                  cornerRadius:cornerRadius];
+    } completionBlock:completed];
 }
 
-- (void)cancelGetImageWithKey:(NSString*)key
+- (void)cancelGetImageOperationsForKey:(NSString*)key
 {
-    NSParameterAssert(key != nil);
+    [_retrievingQueue cancelOperationWithName:key];
+}
 
-    for (FlyImageRetrieveOperation* operation in _retrievingQueue.operations) {
-        if (!operation.cancelled && !operation.finished && [operation.name isEqualToString:key]) {
-            [operation cancel];
-            return;
-        }
-    }
+- (void)cancelGetImageOperation:(FlyImageOperationIdentifier)identifier
+{
+    [_retrievingQueue cancelOperationForIdentifier:identifier];
 }
 
 - (void)purge
@@ -573,16 +576,20 @@
 		__metadataQueue = dispatch_queue_create([name cStringUsingEncoding:NSASCIIStringEncoding], NULL);
     });
 
+    NSRecursiveLock *lock = _lock;
+    NSDictionary *images = _images;
+    NSString *metaPath = _metaPath;
+    
     dispatch_async(__metadataQueue, ^{
-		[_lock lock];
+		[lock lock];
 		
-		NSData *data = [NSJSONSerialization dataWithJSONObject:[_images copy] options:kNilOptions error:NULL];
-		BOOL fileWriteResult = [data writeToFile:_metaPath atomically:NO];
+		NSData *data = [NSJSONSerialization dataWithJSONObject:[images copy] options:kNilOptions error:NULL];
+		BOOL fileWriteResult = [data writeToFile:metaPath atomically:NO];
 		if (fileWriteResult == NO) {
 			FlyImageErrorLog(@"couldn't save metadata");
 		}
 		
-		[_lock unlock];
+		[lock unlock];
     });
 }
 

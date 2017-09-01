@@ -316,7 +316,7 @@ static NSString* kFlyImageKeyFilePointer = @"p";
 
 - (void)cancelGetImageOperationsForKey:(NSString*)key
 {
-    [_retrievingQueue cancelOperationWithName:key];
+    [_retrievingQueue cancelAllOperationsWithName:key];
 }
 
 - (void)cancelGetImageOperation:(FlyImageOperationIdentifier)identifier

@@ -403,11 +403,11 @@
         completed(key, nil);
         return nil;
     }
-
-    // if the image is retrieving, then just add the block, no need to create a new operation.
-    FlyImageRetrieveOperation* existingOperation = [_retrievingQueue operationWithName:key];
-    if (existingOperation) {
-        return [existingOperation addObserverUsingBlock:completed];
+    
+    // if the image is being retrieved, this method will add a new completion handler and return a valid identifier
+    FlyImageOperationIdentifier identifier = [_retrievingQueue updateOperationWithName:key completionBlock:completed];
+    if (identifier != nil) {
+        return identifier;
     }
 
     CGSize imageSize = drawSize;
@@ -420,6 +420,7 @@
 
     __weak __typeof__(self) weakSelf = self;
     
+    // start a new retrieval operation and return an identifier used for cancellations
     return [_retrievingQueue addOperationWithName:key retrieveBlock:^UIImage *{
         if (![dataFile open]) {
             return nil;
@@ -437,7 +438,7 @@
 
 - (void)cancelGetImageOperationsForKey:(NSString*)key
 {
-    [_retrievingQueue cancelOperationWithName:key];
+    [_retrievingQueue cancelAllOperationsWithName:key];
 }
 
 - (void)cancelGetImageOperation:(FlyImageOperationIdentifier)identifier

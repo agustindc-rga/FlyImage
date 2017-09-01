@@ -11,12 +11,9 @@
 #import "FlyImageRetrieveOperation.h"
 
 /**
+ *
  */
 @interface FlyImageOperationQueue : NSObject
-
-// Get
-
-- (FlyImageRetrieveOperation*)operationWithName:(NSString*)name;
 
 // Add
 
@@ -24,11 +21,16 @@
                                       retrieveBlock:(RetrieveOperationBlock)block
                                     completionBlock:(FlyImageCacheRetrieveBlock)completion;
 
+// Update
+
+- (FlyImageOperationIdentifier)updateOperationWithName:(NSString*)name
+                                       completionBlock:(FlyImageCacheRetrieveBlock)completion;
+
 // Cancel
 
 - (void)cancelAllOperations;
 
-- (void)cancelOperationWithName:(NSString*)name;
+- (void)cancelAllOperationsWithName:(NSString*)name;
 
 - (void)cancelOperationForIdentifier:(FlyImageOperationIdentifier)identifier;
 

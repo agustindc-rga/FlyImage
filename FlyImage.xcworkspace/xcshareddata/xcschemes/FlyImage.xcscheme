@@ -20,6 +20,20 @@
                ReferencedContainer = "container:FlyImage.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DD9D96E51CC50336008F279E"
+               BuildableName = "FlyImageTests.xctest"
+               BlueprintName = "FlyImageTests"
+               ReferencedContainer = "container:FlyImage.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

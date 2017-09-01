@@ -9,20 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "FlyImageCacheProtocol.h"
 
-/**
- * Internal class.
- */
-@interface FlyImageRetrieveObserver : NSObject
-
-@property (nonatomic, readonly) NSString *name;
-
-@end
-
-
 typedef UIImage* (^RetrieveOperationBlock)(void);
 
 /**
- *  Internal class. In charge of retrieving and sending UIImage.
+ *  Internal class. In charge of retrieving a UIImage.
  */
 @interface FlyImageRetrieveOperation : NSOperation
 
@@ -33,30 +23,22 @@ typedef UIImage* (^RetrieveOperationBlock)(void);
 - (instancetype)initWithRetrieveBlock:(RetrieveOperationBlock)block;
 
 /**
- *  Add an observer that will call the given block when the operation completes
- *  or is cancelled. The newly created observer is returned to the caller to
- *  allow cancelling the observation.
- *
- *  @param block
+ *  The image retrieved by the operation, or `nil` if the operation is cancelled or never executes.
  */
-- (FlyImageRetrieveObserver*)addObserverUsingBlock:(FlyImageCacheRetrieveBlock)block;
+- (UIImage*)retrievedImage;
+
+@end
 
 /**
- *  The given observer will no longer be notified when the operation completes. The
- *  block associated with the observer will be called as if the operation was cancelled.
- *
- *  @param observer
+ * Internal class. In charge of sending a UIImage retrieved from a previous operation.
  */
-- (void)cancelObserver:(FlyImageRetrieveObserver*)observer;
+@interface FlyImageRetrieveResultOperation : NSOperation
 
 /**
- *  Returns YES if there are any observers that will be notified when the operation completes.
+ *  Once the retrieve operation completes, the block will be executed,
+ *  and it will receive the retrieved image or `nil` if the operation was cancelled.
  */
-- (BOOL)hasActiveObservers;
-
-/**
- *  Callback with result image, which can be nil.
- */
-- (void)executeWithImage:(UIImage*)image;
+- (instancetype)initWithRetrieveOperation:(FlyImageRetrieveOperation*)operation
+                               completion:(FlyImageCacheRetrieveBlock)completion;
 
 @end

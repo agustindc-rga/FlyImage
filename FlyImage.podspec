@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "8.0"
   s.source = { :git => 'https://github.com/northwind/FlyImage.git', :tag => s.version.to_s }
-  s.source_files  = "FlyImage", "FlyImage/**/*.{h,m}"
+  #s.source_files  = "FlyImage", "FlyImage/**/*.{h,m}"
 
   s.frameworks = "ImageIO", 'UIKit'
   s.requires_arc = true
@@ -26,7 +26,12 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
 
   s.subspec 'Core' do |core|
-    core.source_files = "FlyImage", 'FlyImage/**/*.{h,m}'
+    core.source_files = 'FlyImage/Core/*.{h,m}'
+  end
+
+  s.subspec 'UI' do |ui|
+    ui.source_files = 'FlyImage/UI/*.{h,m}'
+    ui.dependency 'FlyImage/Core'
   end
 
   s.subspec 'WebP' do |webp|

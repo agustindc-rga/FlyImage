@@ -41,15 +41,15 @@
 		DDDAE6AF1CE6E10C00B3CCCC /* CALayer+FlyImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6A31CE6E10C00B3CCCC /* CALayer+FlyImageCache.m */; };
 		DDDAE6B01CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6A41CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDDAE6B11CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6A51CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m */; };
-		DDDAE6B21CE6E10C00B3CCCC /* FlyImageIconRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6A61CE6E10C00B3CCCC /* FlyImageIconRenderer.h */; };
-		DDDAE6B31CE6E10C00B3CCCC /* FlyImageIconRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6A71CE6E10C00B3CCCC /* FlyImageIconRenderer.m */; };
-		DDDAE6B41CE6E10C00B3CCCC /* FlyImageRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6A81CE6E10C00B3CCCC /* FlyImageRenderer.h */; };
-		DDDAE6B51CE6E10C00B3CCCC /* FlyImageRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6A91CE6E10C00B3CCCC /* FlyImageRenderer.m */; };
 		DDDAE6B61CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6AA1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDDAE6B71CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6AB1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m */; };
 		DDDAE6B81CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6AC1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDDAE6B91CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6AD1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m */; };
 		DDF65B111CC70DE50066B12F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF65B101CC70DE50066B12F /* UIKit.framework */; };
+		E3337AC51F5E159B008DADB7 /* FlyImageRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E3337AC31F5E159B008DADB7 /* FlyImageRenderer.h */; };
+		E3337AC61F5E159B008DADB7 /* FlyImageRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = E3337AC41F5E159B008DADB7 /* FlyImageRenderer.m */; };
+		E3337AC91F5E15A3008DADB7 /* FlyImageIconRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E3337AC71F5E15A3008DADB7 /* FlyImageIconRenderer.h */; };
+		E3337ACA1F5E15A3008DADB7 /* FlyImageIconRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = E3337AC81F5E15A3008DADB7 /* FlyImageIconRenderer.m */; };
 		E3A5A3491F4F808B001947F4 /* FlyImageOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */; };
 		E3A5A34A1F4F808B001947F4 /* FlyImageOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */; };
 /* End PBXBuildFile section */
@@ -103,15 +103,15 @@
 		DDDAE6A31CE6E10C00B3CCCC /* CALayer+FlyImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+FlyImageCache.m"; sourceTree = "<group>"; };
 		DDDAE6A41CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+FlyImageIconCache.h"; sourceTree = "<group>"; };
 		DDDAE6A51CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+FlyImageIconCache.m"; sourceTree = "<group>"; };
-		DDDAE6A61CE6E10C00B3CCCC /* FlyImageIconRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlyImageIconRenderer.h; sourceTree = "<group>"; };
-		DDDAE6A71CE6E10C00B3CCCC /* FlyImageIconRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlyImageIconRenderer.m; sourceTree = "<group>"; };
-		DDDAE6A81CE6E10C00B3CCCC /* FlyImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlyImageRenderer.h; sourceTree = "<group>"; };
-		DDDAE6A91CE6E10C00B3CCCC /* FlyImageRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlyImageRenderer.m; sourceTree = "<group>"; };
 		DDDAE6AA1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+FlyImageCache.h"; sourceTree = "<group>"; };
 		DDDAE6AB1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+FlyImageCache.m"; sourceTree = "<group>"; };
 		DDDAE6AC1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+FlyImageIconCache.h"; sourceTree = "<group>"; };
 		DDDAE6AD1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+FlyImageIconCache.m"; sourceTree = "<group>"; };
 		DDF65B101CC70DE50066B12F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E3337AC31F5E159B008DADB7 /* FlyImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlyImageRenderer.h; path = FlyImage/Core/FlyImageRenderer.h; sourceTree = SOURCE_ROOT; };
+		E3337AC41F5E159B008DADB7 /* FlyImageRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlyImageRenderer.m; path = FlyImage/Core/FlyImageRenderer.m; sourceTree = SOURCE_ROOT; };
+		E3337AC71F5E15A3008DADB7 /* FlyImageIconRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlyImageIconRenderer.h; path = FlyImage/Core/FlyImageIconRenderer.h; sourceTree = SOURCE_ROOT; };
+		E3337AC81F5E15A3008DADB7 /* FlyImageIconRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlyImageIconRenderer.m; path = FlyImage/Core/FlyImageIconRenderer.m; sourceTree = SOURCE_ROOT; };
 		E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlyImageOperationQueue.h; sourceTree = "<group>"; };
 		E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlyImageOperationQueue.m; sourceTree = "<group>"; };
 		E7D2BCD141491AB1301A46CC /* libPods-FlyImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlyImage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +206,10 @@
 				DD4D2C501D5C678E001F5D77 /* FlyImageRetrieveOperation.m */,
 				E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */,
 				E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */,
+				E3337AC31F5E159B008DADB7 /* FlyImageRenderer.h */,
+				E3337AC41F5E159B008DADB7 /* FlyImageRenderer.m */,
+				E3337AC71F5E15A3008DADB7 /* FlyImageIconRenderer.h */,
+				E3337AC81F5E15A3008DADB7 /* FlyImageIconRenderer.m */,
 			);
 			name = Core;
 			path = core;
@@ -218,10 +222,6 @@
 				DDDAE6A31CE6E10C00B3CCCC /* CALayer+FlyImageCache.m */,
 				DDDAE6A41CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.h */,
 				DDDAE6A51CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m */,
-				DDDAE6A61CE6E10C00B3CCCC /* FlyImageIconRenderer.h */,
-				DDDAE6A71CE6E10C00B3CCCC /* FlyImageIconRenderer.m */,
-				DDDAE6A81CE6E10C00B3CCCC /* FlyImageRenderer.h */,
-				DDDAE6A91CE6E10C00B3CCCC /* FlyImageRenderer.m */,
 				DDDAE6AA1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h */,
 				DDDAE6AB1CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m */,
 				DDDAE6AC1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h */,
@@ -266,13 +266,13 @@
 				DDDAE6B01CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.h in Headers */,
 				DDD8FB5B1D59D0F900821392 /* FlyImageIconCacheUIProtocol.h in Headers */,
 				DDDAE6B61CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h in Headers */,
+				E3337AC91F5E15A3008DADB7 /* FlyImageIconRenderer.h in Headers */,
 				DDDAE6B81CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h in Headers */,
 				DDDAE6AE1CE6E10C00B3CCCC /* CALayer+FlyImageCache.h in Headers */,
 				E3A5A3491F4F808B001947F4 /* FlyImageOperationQueue.h in Headers */,
 				DDD8FB5E1D59D24900821392 /* FlyImageCacheUIProtocol.h in Headers */,
 				DD9D97191CC5034A008F279E /* FlyImageDataFileManager.h in Headers */,
-				DDDAE6B21CE6E10C00B3CCCC /* FlyImageIconRenderer.h in Headers */,
-				DDDAE6B41CE6E10C00B3CCCC /* FlyImageRenderer.h in Headers */,
+				E3337AC51F5E159B008DADB7 /* FlyImageRenderer.h in Headers */,
 				DD9D97161CC5034A008F279E /* FlyImageCacheProtocol.h in Headers */,
 				DD9D97171CC5034A008F279E /* FlyImageDataFile.h in Headers */,
 				DD9D971B1CC5034A008F279E /* FlyImageDecoder.h in Headers */,
@@ -415,7 +415,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDDAE6B31CE6E10C00B3CCCC /* FlyImageIconRenderer.m in Sources */,
 				DD9D971C1CC5034A008F279E /* FlyImageDecoder.m in Sources */,
 				DD9D97241CC5034A008F279E /* FlyImageUtils.m in Sources */,
 				DD9D97151CC5034A008F279E /* FlyImageCache.m in Sources */,
@@ -423,8 +422,9 @@
 				DD9D97181CC5034A008F279E /* FlyImageDataFile.m in Sources */,
 				DDDAE6B71CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m in Sources */,
 				E3A5A34A1F4F808B001947F4 /* FlyImageOperationQueue.m in Sources */,
-				DDDAE6B51CE6E10C00B3CCCC /* FlyImageRenderer.m in Sources */,
+				E3337AC61F5E159B008DADB7 /* FlyImageRenderer.m in Sources */,
 				DD4D2C521D5C678E001F5D77 /* FlyImageRetrieveOperation.m in Sources */,
+				E3337ACA1F5E15A3008DADB7 /* FlyImageIconRenderer.m in Sources */,
 				DDDAE6B11CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m in Sources */,
 				DD9D97201CC5034A008F279E /* FlyImageEncoder.m in Sources */,
 				DDDAE6B91CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m in Sources */,

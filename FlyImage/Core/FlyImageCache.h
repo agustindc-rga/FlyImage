@@ -45,11 +45,11 @@
  *  @param cornerRadius    cornerRadius of render view
  *  @param completed       callback
  */
-- (void)asyncGetImageWithKey:(NSString*)key
-                    drawSize:(CGSize)drawSize
-             contentsGravity:(NSString* const)contentsGravity
-                cornerRadius:(CGFloat)cornerRadius
-                   completed:(FlyImageCacheRetrieveBlock)completed;
+- (FlyImageOperationIdentifier)asyncGetImageWithKey:(NSString*)key
+                                            drawSize:(CGSize)drawSize
+                                     contentsGravity:(NSString* const)contentsGravity
+                                        cornerRadius:(CGFloat)cornerRadius
+                                           completed:(FlyImageCacheRetrieveBlock)completed;
 
 /**
  *  Get the image path saved in the disk.

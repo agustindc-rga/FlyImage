@@ -12,26 +12,33 @@
 typedef UIImage* (^RetrieveOperationBlock)(void);
 
 /**
- *  Internal class. In charge of retrieving and sending UIImage.
+ *  Internal class. In charge of retrieving a UIImage.
  */
 @interface FlyImageRetrieveOperation : NSOperation
 
 /**
- *  When the operation start running, the block will be executed, 
- *  and require an uncompressed UIImage.
+ *  When the operation starts running, the block will be executed,
+ *  and it should return an uncompressed UIImage.
  */
 - (instancetype)initWithRetrieveBlock:(RetrieveOperationBlock)block;
 
 /**
- *  Allow to add multiple blocks
- *
- *  @param block
+ *  The image retrieved by the operation, or `nil` if the operation is cancelled or never executes.
  */
-- (void)addBlock:(FlyImageCacheRetrieveBlock)block;
+- (UIImage*)retrievedImage;
+
+@end
 
 /**
- *  Callback with result image, which can be nil.
+ * Internal class. In charge of sending a UIImage retrieved from a previous operation.
  */
-- (void)executeWithImage:(UIImage*)image;
+@interface FlyImageRetrieveResultOperation : NSOperation
+
+/**
+ *  Once the retrieve operation completes, the block will be executed,
+ *  and it will receive the retrieved image or `nil` if the operation was cancelled.
+ */
+- (instancetype)initWithRetrieveOperation:(FlyImageRetrieveOperation*)operation
+                               completion:(FlyImageCacheRetrieveBlock)completion;
 
 @end

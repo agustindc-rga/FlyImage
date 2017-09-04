@@ -50,6 +50,8 @@
 		DDDAE6B81CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h in Headers */ = {isa = PBXBuildFile; fileRef = DDDAE6AC1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DDDAE6B91CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDAE6AD1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m */; };
 		DDF65B111CC70DE50066B12F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF65B101CC70DE50066B12F /* UIKit.framework */; };
+		E3A5A3491F4F808B001947F4 /* FlyImageOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */; };
+		E3A5A34A1F4F808B001947F4 /* FlyImageOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,8 @@
 		DDDAE6AC1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+FlyImageIconCache.h"; sourceTree = "<group>"; };
 		DDDAE6AD1CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+FlyImageIconCache.m"; sourceTree = "<group>"; };
 		DDF65B101CC70DE50066B12F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlyImageOperationQueue.h; sourceTree = "<group>"; };
+		E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlyImageOperationQueue.m; sourceTree = "<group>"; };
 		E7D2BCD141491AB1301A46CC /* libPods-FlyImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlyImage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -200,6 +204,8 @@
 				DD9D97071CC5034A008F279E /* FlyImageUtils.m */,
 				DD4D2C4F1D5C678E001F5D77 /* FlyImageRetrieveOperation.h */,
 				DD4D2C501D5C678E001F5D77 /* FlyImageRetrieveOperation.m */,
+				E3A5A3471F4F808B001947F4 /* FlyImageOperationQueue.h */,
+				E3A5A3481F4F808B001947F4 /* FlyImageOperationQueue.m */,
 			);
 			name = Core;
 			path = core;
@@ -262,6 +268,7 @@
 				DDDAE6B61CE6E10C00B3CCCC /* UIImageView+FlyImageCache.h in Headers */,
 				DDDAE6B81CE6E10C00B3CCCC /* UIImageView+FlyImageIconCache.h in Headers */,
 				DDDAE6AE1CE6E10C00B3CCCC /* CALayer+FlyImageCache.h in Headers */,
+				E3A5A3491F4F808B001947F4 /* FlyImageOperationQueue.h in Headers */,
 				DDD8FB5E1D59D24900821392 /* FlyImageCacheUIProtocol.h in Headers */,
 				DD9D97191CC5034A008F279E /* FlyImageDataFileManager.h in Headers */,
 				DDDAE6B21CE6E10C00B3CCCC /* FlyImageIconRenderer.h in Headers */,
@@ -389,13 +396,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FlyImage-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -412,6 +422,7 @@
 				DD9D971E1CC5034A008F279E /* FlyImageDownloader.m in Sources */,
 				DD9D97181CC5034A008F279E /* FlyImageDataFile.m in Sources */,
 				DDDAE6B71CE6E10C00B3CCCC /* UIImageView+FlyImageCache.m in Sources */,
+				E3A5A34A1F4F808B001947F4 /* FlyImageOperationQueue.m in Sources */,
 				DDDAE6B51CE6E10C00B3CCCC /* FlyImageRenderer.m in Sources */,
 				DD4D2C521D5C678E001F5D77 /* FlyImageRetrieveOperation.m in Sources */,
 				DDDAE6B11CE6E10C00B3CCCC /* CALayer+FlyImageIconCache.m in Sources */,

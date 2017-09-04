@@ -75,11 +75,11 @@
 
     // try to cancel getting image operation.
     if (_originalURL) {
-        [[FlyImageCache sharedInstance] cancelGetImageWithKey:_originalURL.absoluteString];
+        [[FlyImageCache sharedInstance] cancelGetImageOperationsForKey:_originalURL.absoluteString];
     }
 
     if (_thumbnailURL) {
-        [[FlyImageCache sharedInstance] cancelGetImageWithKey:_thumbnailURL.absoluteString];
+        [[FlyImageCache sharedInstance] cancelGetImageOperationsForKey:_thumbnailURL.absoluteString];
     }
 }
 

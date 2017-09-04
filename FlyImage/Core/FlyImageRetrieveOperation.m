@@ -9,33 +9,16 @@
 #import "FlyImageRetrieveOperation.h"
 
 @implementation FlyImageRetrieveOperation {
-    NSMutableArray* _blocks;
     RetrieveOperationBlock _retrieveBlock;
+    UIImage* _retrievedImage;
 }
 
 - (instancetype)initWithRetrieveBlock:(RetrieveOperationBlock)block
 {
     if (self = [self init]) {
-        _retrieveBlock = block;
+        _retrieveBlock = [block copy];
     }
     return self;
-}
-
-- (void)addBlock:(FlyImageCacheRetrieveBlock)block
-{
-    if (_blocks == nil) {
-        _blocks = [NSMutableArray new];
-    }
-
-    [_blocks addObject:block];
-}
-
-- (void)executeWithImage:(UIImage*)image
-{
-    for (FlyImageCacheRetrieveBlock block in _blocks) {
-        block(self.name, image);
-    }
-    [_blocks removeAllObjects];
 }
 
 - (void)main
@@ -43,18 +26,64 @@
     if (self.isCancelled) {
         return;
     }
-
-    UIImage* image = _retrieveBlock();
-    [self executeWithImage:image];
+    _retrievedImage = _retrieveBlock();
 }
 
 - (void)cancel
 {
-    if (self.isFinished)
+    if (self.isFinished) {
         return;
+    }
     [super cancel];
+    _retrievedImage = nil;
+}
 
-    [self executeWithImage:nil];
+- (UIImage*)retrievedImage
+{
+    return _retrievedImage;
+}
+
+@end
+
+@implementation FlyImageRetrieveResultOperation {
+    FlyImageRetrieveOperation *_retrieveOperation;
+    FlyImageCacheRetrieveBlock _completionBlock;
+}
+
+- (instancetype)initWithRetrieveOperation:(FlyImageRetrieveOperation*)operation
+                               completion:(FlyImageCacheRetrieveBlock)completion
+{
+    if (self = [self init]) {
+        _retrieveOperation = operation;
+        _completionBlock = [completion copy];
+        
+        [self addDependency:operation];
+    }
+    return self;
+}
+
+- (void)main
+{
+    if (self.isCancelled) {
+        return;
+    }
+    if (_retrieveOperation.isCancelled) {
+        [self cancel];
+        return;
+    }
+    
+    UIImage *image = [_retrieveOperation retrievedImage];
+    _completionBlock(_retrieveOperation.name, image);
+}
+
+- (void)cancel
+{
+    if (self.isFinished) {
+        return;
+    }
+    [super cancel];
+    
+    _completionBlock(_retrieveOperation.name, nil);
 }
 
 @end

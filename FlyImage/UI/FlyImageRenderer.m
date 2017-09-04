@@ -16,6 +16,9 @@
     NSURL* _thumbnailURL;
     NSURL* _originalURL;
 
+    FlyImageOperationIdentifier _fetchOperationId;
+    FlyImageOperationIdentifier _thumbnailFetchOperationId;
+    
     CGSize _drawSize;
     NSString* _contentsGravity;
     CGFloat _cornerRadius;
@@ -74,12 +77,14 @@
     }
 
     // try to cancel getting image operation.
-    if (_originalURL) {
-        [[FlyImageCache sharedInstance] cancelGetImageOperationsForKey:_originalURL.absoluteString];
+    if (_fetchOperationId != nil) {
+        [[FlyImageCache sharedInstance] cancelGetImageOperation:_fetchOperationId];
+        _fetchOperationId = nil;
     }
 
-    if (_thumbnailURL) {
-        [[FlyImageCache sharedInstance] cancelGetImageOperationsForKey:_thumbnailURL.absoluteString];
+    if (_thumbnailFetchOperationId != nil) {
+        [[FlyImageCache sharedInstance] cancelGetImageOperation:_thumbnailFetchOperationId];
+        _thumbnailFetchOperationId = nil;
     }
 }
 
@@ -116,6 +121,7 @@
     NSString* originalKey = _originalURL.absoluteString;
     if (originalKey != nil && [[FlyImageCache sharedInstance] imageExistsWithKey:originalKey]) {
         __weak __typeof__(self) weakSelf = self;
+        _fetchOperationId =
         [[FlyImageCache sharedInstance] asyncGetImageWithKey:originalKey
                                                     drawSize:_drawSize
                                              contentsGravity:_contentsGravity
@@ -130,6 +136,7 @@
     NSString* thumbnailKey = _thumbnailURL.absoluteString;
     if (thumbnailKey != nil && [[FlyImageCache sharedInstance] imageExistsWithKey:thumbnailKey]) {
         __weak __typeof__(self) weakSelf = self;
+        _thumbnailFetchOperationId =
         [[FlyImageCache sharedInstance] asyncGetImageWithKey:thumbnailKey
                                                     drawSize:_drawSize
                                              contentsGravity:_contentsGravity
